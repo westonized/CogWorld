@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>cog world</title>
+</head>
+<body>
+<button id="demo" type="button" onclick="newCog()">+cog</button>
+
+<script src="js/NameSpaces.js"></script>
+<script src="js/Cog.js"></script>
+<script src="js/World.js"></script>
+<script>
+    var world = new CogWorld.World();
+    function newCog(){
+        world.add(new CogWorld.Cog());
+    }
+</script>
+</body>
+</html>
