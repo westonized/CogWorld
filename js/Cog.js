@@ -13,6 +13,7 @@ CogWorld.CogBuilder = (function () {
             this.teath = builder._teath;
             this.innerRing = builder._teath;
             this.outerRing = this.innerRing + 5;
+            this.clock = null;
         };
 
         Cog.prototype.getX = function () {
@@ -25,8 +26,17 @@ CogWorld.CogBuilder = (function () {
         Cog.prototype.getY = function () {
             return this.y;
         };
+
         Cog.prototype.setY = function (y) {
             this.y = y;
+        };
+
+        Cog.prototype.setClock = function (clock) {
+            this.clock = clock;
+        };
+
+        Cog.prototype.getAngle = function () {
+            return this.clock === null ? 0 : this.clock.getTeath() / this.teath;
         };
 
         return Cog;

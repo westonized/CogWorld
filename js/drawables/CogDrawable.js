@@ -10,6 +10,8 @@ CogWorld.Drawables.CogDrawable = (function () {
     CogDrawable.prototype.draw = function (context) {
         context.translate(this.cog.getX(), this.cog.getY());
 
+        context.rotate(this.cog.getAngle());
+
         context.strokeStyle = "#afafaf";
 
         context.beginPath();

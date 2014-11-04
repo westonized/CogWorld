@@ -12,6 +12,7 @@
 <script src="js/NameSpaces.js"></script>
 <script src="js/Cog.js"></script>
 <script src="js/World.js"></script>
+<script src="js/DrivenCogClock.js"></script>
 <script src="js/drawables/CogDrawable.js"></script>
 <script>
     var world = new CogWorld.World();
@@ -20,6 +21,8 @@
     var smallCog = new CogWorld.CogBuilder().teath(20);
 
     var drawables = [];
+
+    var clock = new CogWorld.DrivenCogClock();
 
     function newLargeCog() {
         newCog(largeCog);
@@ -33,6 +36,7 @@
         var cog = builder.build();
         cog.setX(50);
         cog.setY(50 + 10 * drawables.length);
+        cog.setClock(clock);
         world.add(cog);
         drawables.push(new CogWorld.Drawables.CogDrawable(cog));
         redraw();
@@ -41,6 +45,8 @@
     function redraw() {
         var canvas = document.getElementById("canvas");
         var context = canvas.getContext("2d");
+        context.fillStyle = "white";
+        context.fillRect(0, 0, canvas.width, canvas.height);
 
         for (var i = 0; i < drawables.length; i++) {
             var drawable = drawables[i];
@@ -50,6 +56,18 @@
         }
     }
     newLargeCog();
+
+    function step(timestamp) {
+        clock.setTime(timestamp);
+        redraw();
+        animate();
+    }
+
+    function animate() {
+        requestAnimationFrame(step, 1000 / 60);
+    }
+
+    animate();
 </script>
 </body>
 </html>
