@@ -1,27 +1,46 @@
-CogWorld.Cog = (function () {
-    'use strict';
+CogWorld.CogBuilder = (function () {
 
-    function Cog(teath) {
-        this.x = 0;
-        this.y = 0;
-        this.teath = teath;
-        this.innerRing = teath;
-        this.outerRing = this.innerRing + 5;
+    function CogBuilder() {
+        this._teath = 20;
     };
 
-    Cog.prototype.getX = function () {
-        return this.x;
-    };
-    Cog.prototype.setX = function (x) {
-        this.x = x;
+    var Cog = (function () {
+        'use strict';
+
+        function Cog(builder) {
+            this.x = 0;
+            this.y = 0;
+            this.teath = builder._teath;
+            this.innerRing = builder._teath;
+            this.outerRing = this.innerRing + 5;
+        };
+
+        Cog.prototype.getX = function () {
+            return this.x;
+        };
+        Cog.prototype.setX = function (x) {
+            this.x = x;
+        };
+
+        Cog.prototype.getY = function () {
+            return this.y;
+        };
+        Cog.prototype.setY = function (y) {
+            this.y = y;
+        };
+
+        return Cog;
+    }());
+
+    CogBuilder.prototype.teath = function (teath) {
+        this._teath = teath;
+        return this;
     };
 
-    Cog.prototype.getY = function () {
-        return this.y;
-    };
-    Cog.prototype.setY = function (y) {
-        this.y = y;
+    CogBuilder.prototype.build = function () {
+        return new Cog(this);
     };
 
-    return Cog;
+    return CogBuilder;
+
 }());

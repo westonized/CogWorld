@@ -8,7 +8,6 @@ CogWorld.Drawables.CogDrawable = (function () {
     };
 
     CogDrawable.prototype.draw = function (context) {
-        context.save();
         context.translate(this.cog.getX(), this.cog.getY());
 
         context.strokeStyle = "#afafaf";
@@ -41,10 +40,6 @@ CogWorld.Drawables.CogDrawable = (function () {
         context.moveTo(this.cog.innerRing, 0);
         context.lineTo(-this.cog.innerRing, 0);
         context.stroke();
-
-        context.text()
-
-        context.restore();
     };
 
     return CogDrawable;

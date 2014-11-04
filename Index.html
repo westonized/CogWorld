@@ -5,7 +5,8 @@
     <title>cog world</title>
 </head>
 <body>
-<button id="demo" type="button" onclick="newCog()">+cog</button>
+<button type="button" onclick="newLargeCog()">+cog(40)</button>
+<button type="button" onclick="newSmallCog()">+cog(20)</button>
 <canvas id="canvas"></canvas>
 
 <script src="js/NameSpaces.js"></script>
@@ -14,27 +15,41 @@
 <script src="js/drawables/CogDrawable.js"></script>
 <script>
     var world = new CogWorld.World();
+
+    var largeCog = new CogWorld.CogBuilder().teath(40);
+    var smallCog = new CogWorld.CogBuilder().teath(20);
+
     var drawables = [];
-    function newCog() {
-        var cog = new CogWorld.Cog(40);
+
+    function newLargeCog() {
+        newCog(largeCog);
+    }
+
+    function newSmallCog() {
+        newCog(smallCog);
+    }
+
+    function newCog(builder) {
+        var cog = builder.build();
         cog.setX(50);
         cog.setY(50 + 10 * drawables.length);
         world.add(cog);
         drawables.push(new CogWorld.Drawables.CogDrawable(cog));
         redraw();
     }
-    function redraw() {
 
+    function redraw() {
         var canvas = document.getElementById("canvas");
         var context = canvas.getContext("2d");
 
         for (var i = 0; i < drawables.length; i++) {
             var drawable = drawables[i];
+            context.save();
             drawable.draw(context);
+            context.restore();
         }
-
     }
-    newCog();
+    newLargeCog();
 </script>
 </body>
 </html>
