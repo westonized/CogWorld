@@ -1,1 +1,1 @@
-var CogWorld = {}
+var CogWorld = {Drawables: {}}
