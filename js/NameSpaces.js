@@ -1,1 +1,4 @@
-var CogWorld = {Drawables: {}}
+var CogWorld = {
+    Drawables: {},
+    Drivers: {}
+}
