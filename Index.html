@@ -5,26 +5,36 @@
     <title>cog world</title>
 </head>
 <body>
-<button type="button" onclick="newLargeCog()">+cog(40)</button>
-<button type="button" onclick="newSmallCog()">+cog(20)</button>
-<canvas id="canvas"></canvas>
+<div>
+    <button type="button" onclick="newLargeCog()">+cog(40)</button>
+    <button type="button" onclick="newSmallCog()">+cog(20)</button>
+    <button type="button" onclick="newTinyCog()">+cog(12)</button>
+</div>
+<div>
+    <canvas id="canvas" width="1024px"></canvas>
+</div>
 
 <script src="js/NameSpaces.js"></script>
 <script src="js/Cog.js"></script>
 <script src="js/World.js"></script>
 <script src="js/drivers/ClockAngleDriver.js"></script>
+<script src="js/drivers/AngleToTeethAdaptor.js"></script>
+<script src="js/drivers/TeethToAngleAdaptor.js"></script>
+<script src="js/drivers/HalfToothDecorator.js"></script>
 <script src="js/drivers/ReverseAngleDriverDecorator.js"></script>
 <script src="js/drawables/CogDrawable.js"></script>
 <script>
     var world = new CogWorld.World();
 
-    var largeCog = new CogWorld.CogBuilder().teath(40);
-    var smallCog = new CogWorld.CogBuilder().teath(20);
+    var largeCog = new CogWorld.CogBuilder().teeth(40);
+    var smallCog = new CogWorld.CogBuilder().teeth(20);
+    var tinyCog = new CogWorld.CogBuilder().teeth(12);
 
     var drawables = [];
 
     var clock = new CogWorld.Drivers.ClockAngleDriver();
-    var driver = clock;
+
+    var lastcog = null;
 
     function newLargeCog() {
         newCog(largeCog);
@@ -34,14 +44,31 @@
         newCog(smallCog);
     }
 
+    function newTinyCog() {
+        newCog(tinyCog);
+    }
+
     function newCog(builder) {
         var cog = builder.build();
-        cog.setX(50 + 85 * drawables.length);
+        var x = 50;
+        if (lastcog !== null) {
+            x = lastcog.getX() + cog.getOuterRing() + lastcog.getInnerRing();
+        }
+        cog.setX(x);
         cog.setY(50);
-        cog.setAngleDriver(driver);
+        if (lastcog === null) {
+            cog.setAngleDriver(clock);
+        }
+        else {
+            var teeth = new CogWorld.Drivers.AngleToTeethAdaptor(lastcog.getAngleDriver(), lastcog);
+            teeth = new CogWorld.Drivers.HalfToothDecorator(teeth);
+            var driver = new CogWorld.Drivers.TeethToAngleAdaptor(teeth, cog);
+            var reversed = new CogWorld.Drivers.ReverseAngleDriverDecorator(driver);
+            cog.setAngleDriver(reversed);
+        }
         world.add(cog);
         drawables.push(new CogWorld.Drawables.CogDrawable(cog));
-        driver = new CogWorld.Drivers.ReverseAngleDriverDecorator(driver);
+        lastcog = cog;
         redraw();
     }
 

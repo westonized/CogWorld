@@ -11,7 +11,7 @@ CogWorld.Drivers.ClockAngleDriver = (function () {
 
     ClockAngleDriver.prototype.getAngle = function () {
         var rps = 4;
-        return Math.PI * 2 * this.time / (rps*1000);
+        return Math.PI * 2 * this.time / (rps * 1000);
     };
 
     return ClockAngleDriver;

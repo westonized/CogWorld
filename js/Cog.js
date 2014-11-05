@@ -1,7 +1,7 @@
 CogWorld.CogBuilder = (function () {
 
     function CogBuilder() {
-        this._teath = 20;
+        this._teeth = 20;
     };
 
     var Cog = (function () {
@@ -10,8 +10,8 @@ CogWorld.CogBuilder = (function () {
         function Cog(builder) {
             this.x = 0;
             this.y = 0;
-            this.teath = builder._teath;
-            this.innerRing = builder._teath;
+            this.teeth = builder._teeth;
+            this.innerRing = builder._teeth;
             this.outerRing = this.innerRing + 5;
             this.angleDriver = null;
         };
@@ -31,8 +31,24 @@ CogWorld.CogBuilder = (function () {
             this.y = y;
         };
 
+        Cog.prototype.getTeeth = function () {
+            return this.teeth;
+        };
+
+        Cog.prototype.getInnerRing = function () {
+            return this.innerRing;
+        };
+
+        Cog.prototype.getOuterRing = function () {
+            return this.outerRing;
+        };
+
         Cog.prototype.setAngleDriver = function (angleDriver) {
             this.angleDriver = angleDriver;
+        };
+
+        Cog.prototype.getAngleDriver = function () {
+            return this.angleDriver;
         };
 
         Cog.prototype.getAngle = function () {
@@ -42,8 +58,8 @@ CogWorld.CogBuilder = (function () {
         return Cog;
     }());
 
-    CogBuilder.prototype.teath = function (teath) {
-        this._teath = teath;
+    CogBuilder.prototype.teeth = function (teeth) {
+        this._teeth = teeth;
         return this;
     };
 
