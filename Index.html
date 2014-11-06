@@ -16,11 +16,12 @@
 
 <script src="js/NameSpaces.js"></script>
 <script src="js/Cog.js"></script>
-<script src="js/World.js"></script>
 <script src="js/drivers/ClockAngleDriver.js"></script>
+<script src="js/World.js"></script>
 <script src="js/drivers/AngleToTeethAdaptor.js"></script>
 <script src="js/drivers/TeethToAngleAdaptor.js"></script>
 <script src="js/drivers/HalfToothDecorator.js"></script>
+<script src="js/drivers/NullAngleDriver.js "></script>
 <script src="js/drivers/ReverseAngleDriverDecorator.js"></script>
 <script src="js/drawables/CogDrawable.js"></script>
 <script>
@@ -31,10 +32,6 @@
     var tinyCog = new CogWorld.CogBuilder().teeth(12);
 
     var drawables = [];
-
-    var clock = new CogWorld.Drivers.ClockAngleDriver();
-
-    var lastcog = null;
 
     function newLargeCog() {
         newCog(largeCog);
@@ -51,24 +48,16 @@
     function newCog(builder) {
         var cog = builder.build();
         var x = 50;
-        if (lastcog !== null) {
-            x = lastcog.getX() + cog.getOuterRing() + lastcog.getInnerRing();
+        if (world.getLastCog() !== null) {
+            x = world.getLastCog().getX() + cog.getOuterRing() + world.getLastCog().getInnerRing();
         }
         cog.setX(x);
         cog.setY(50);
-        if (lastcog === null) {
-            cog.setAngleDriver(clock);
-        }
-        else {
-            var teeth = new CogWorld.Drivers.AngleToTeethAdaptor(lastcog.getAngleDriver(), lastcog);
-            teeth = new CogWorld.Drivers.HalfToothDecorator(teeth);
-            var driver = new CogWorld.Drivers.TeethToAngleAdaptor(teeth, cog);
-            var reversed = new CogWorld.Drivers.ReverseAngleDriverDecorator(driver);
-            cog.setAngleDriver(reversed);
-        }
+
         world.add(cog);
+
         drawables.push(new CogWorld.Drawables.CogDrawable(cog));
-        lastcog = cog;
+
         redraw();
     }
 
@@ -88,7 +77,7 @@
     newLargeCog();
 
     function step(timestamp) {
-        clock.setTime(timestamp);
+        world.setTime(timestamp);
         redraw();
         animate();
     }

@@ -1,9 +1,9 @@
 CogWorld.Drivers.TeethToAngleAdaptor = (function () {
     'use strict';
 
-    function TeethToAngleAdaptor(teethDriver, cog) {
+    function TeethToAngleAdaptor(teethDriver, teethOnCog) {
         this.teethDriver = teethDriver;
-        this.teeth = cog.getTeeth();
+        this.teeth = teethOnCog;
     };
 
     TeethToAngleAdaptor.prototype.getAngle = function () {

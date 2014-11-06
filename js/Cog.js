@@ -13,7 +13,7 @@ CogWorld.CogBuilder = (function () {
             this.teeth = builder._teeth;
             this.innerRing = builder._teeth;
             this.outerRing = this.innerRing + 5;
-            this.angleDriver = null;
+            this.angleDriver = new CogWorld.Drivers.NullAngleDriver();
         };
 
         Cog.prototype.getX = function () {
@@ -44,6 +44,8 @@ CogWorld.CogBuilder = (function () {
         };
 
         Cog.prototype.setAngleDriver = function (angleDriver) {
+            if (angleDriver === null)
+                angleDriver = new CogWorld.Drivers.NullAngleDriver();
             this.angleDriver = angleDriver;
         };
 
@@ -52,8 +54,19 @@ CogWorld.CogBuilder = (function () {
         };
 
         Cog.prototype.getAngle = function () {
-            return this.angleDriver === null ? 0 : this.angleDriver.getAngle();
+            return this.angleDriver.getAngle();
         };
+
+        Cog.prototype.inRange = function (otherCog) {
+            var dx = otherCog.getX() - this.getX();
+            var dy = otherCog.getY() - this.getY();
+            var dxdy2 = dx * dx + dy * dy;
+            var fathest = otherCog.getOuterRing() + this.getOuterRing();
+            var closest = otherCog.getInnerRing() + this.getOuterRing();
+            return dxdy2 < fathest * fathest &&
+                dxdy2 >= closest * closest;
+        };
+
 
         return Cog;
     }());
